@@ -6,21 +6,34 @@ using System;
 
 namespace Zamirathe_HomeCommand
 {
-    public class CommandHome : Command
+    public class CommandHome : IRocketCommand
     {
-        public CommandHome()
+        public bool RunFromConsole
         {
-            this.commandName = "home";
-            this.commandHelp = "Teleports you to your bed if you have one.";
-            this.commandInfo = this.commandName + " - " + this.commandHelp;
+            get
+            {
+                return false;
+            }
         }
-
-        protected override void execute(SteamPlayerID playerid, string bed)
+        public string Name
         {
-            if (!RocketCommand.IsPlayer(playerid)) return;
-            SteamPlayer player = PlayerTool.getSteamPlayer(playerid.CSteamID);
-            HomePlayer homeplayer = player.Player.transform.GetComponent<HomePlayer>();
-            object[] cont = HomeCommand.CheckConfig(player, homeplayer);
+            get
+            {
+                return "home";
+            }
+        }
+        public string Help
+        {
+            get
+            {
+                return "Teleports you to your bed if you have one.";
+            }
+        }
+        public void Execute(CSteamID playerid, string bed)
+        {
+            Player player = PlayerTool.getPlayer(playerid);
+            HomePlayer homeplayer = player.transform.GetComponent<HomePlayer>();
+            object[] cont = HomeCommand.CheckConfig(player, playerid, homeplayer);
             if (!(bool)cont[0]) return;
             // A bed was found, so let's run a few checks.
             if (HomeCommand.Instance.Configuration.TeleportWait)
@@ -29,12 +42,12 @@ namespace Zamirathe_HomeCommand
                 if (HomeCommand.Instance.Configuration.MovementRestriction)
                 {
                     // Admin wants them not to move either.  So let's send the appropriate msg and start the timer.
-                    RocketChatManager.Say(player.SteamPlayerID.CSteamID, String.Format(HomeCommand.Instance.Configuration.FoundBedWaitNoMoveMsg, player.Player.name, HomeCommand.Instance.Configuration.TeleportWaitTime));
+                    RocketChatManager.Say(playerid, String.Format(HomeCommand.Instance.Configuration.FoundBedWaitNoMoveMsg, player.name, HomeCommand.Instance.Configuration.TeleportWaitTime));
                 }
                 else
                 {
                     // Admin just wants them to wait but they can move.
-                    RocketChatManager.Say(player.SteamPlayerID.CSteamID, String.Format(HomeCommand.Instance.Configuration.FoundBedNowWaitMsg, player.Player.name, HomeCommand.Instance.Configuration.TeleportWaitTime));
+                    RocketChatManager.Say(playerid, String.Format(HomeCommand.Instance.Configuration.FoundBedNowWaitMsg, player.name, HomeCommand.Instance.Configuration.TeleportWaitTime));
                 }
             }
             homeplayer.GoHome((Vector3)cont[1], (byte)cont[2], player);

@@ -25,12 +25,12 @@ namespace Zamirathe_HomeCommand
             this.GoingHome = false;
             this.cangohome = false;
         }
-        public void GoHome(Vector3 bedPos, byte bedRot, SteamPlayer player)
+        public void GoHome(Vector3 bedPos, byte bedRot, Player player)
         {
             this.waitrestricted = HomeCommand.Instance.Configuration.TeleportWait;
             this.waittime = HomeCommand.Instance.Configuration.TeleportWaitTime;
             this.movementrestricted = HomeCommand.Instance.Configuration.MovementRestriction;
-            this.p = player.Player;
+            this.p = player;
             this.bedPos = Vector3.up + bedPos;
             this.bedRot = bedRot;
 
