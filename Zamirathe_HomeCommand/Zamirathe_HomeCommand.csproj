@@ -58,6 +58,7 @@
     <Compile Include="CommandHome.cs" />
     <Compile Include="HomeCommand.cs" />
     <Compile Include="HomeCommandConfiguration.cs" />
+    <Compile Include="HomeGroups.cs" />
     <Compile Include="HomePlayer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Rocket.RocketAPI;
 using SDG;
 using UnityEngine;
@@ -10,11 +11,19 @@ namespace Zamirathe_HomeCommand
     {
         public static bool running;
         public static DateTime start;
+        public Dictionary<string, byte> WaitGroups = new Dictionary<string, byte>();
         public static HomeCommand Instance;
 
         protected override void Load()
         {
             HomeCommand.Instance = this;
+            if (Loaded)
+            {
+                foreach (HomeGroup hg in this.Configuration.WaitGroups)
+                {
+                    WaitGroups.Add(hg.Id, hg.Wait);
+                }
+            }
         }
         // All we are doing here is checking the config to see if anything like restricted movement or time restriction is enforced.
         public static object[] CheckConfig(Player player, CSteamID playerid, HomePlayer homeplayer)

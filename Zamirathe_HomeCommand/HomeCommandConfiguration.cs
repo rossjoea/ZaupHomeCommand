@@ -1,4 +1,6 @@
 ﻿using Rocket.RocketAPI;
+using System;
+using System.Collections.Generic;
 
 namespace Zamirathe_HomeCommand
 {
@@ -9,7 +11,7 @@ namespace Zamirathe_HomeCommand
         public string NoBedMsg;
         public string NoVehicleMsg;
         public bool TeleportWait;
-        public byte TeleportWaitTime;
+        public List<HomeGroup> WaitGroups;
         public string TeleportMsg;
         public string FoundBedNowWaitMsg;
         public bool MovementRestriction;
@@ -28,7 +30,12 @@ namespace Zamirathe_HomeCommand
                     NoBedMsg = "I'm sorry {0}, but I could not find your bed.",
                     NoVehicleMsg = "I'm sorry {0}, but you can't be teleported while inside a vehicle.",
                     TeleportWait = false,
-                    TeleportWaitTime = 5,
+                    WaitGroups = new List<HomeGroup>() {
+                        new HomeGroup{Id = "all", Wait = 5},
+                        new HomeGroup{Id = "admin", Wait = 0},
+                        new HomeGroup{Id = "moderator", Wait = 3},
+                        new HomeGroup{Id = "default", Wait = 5}
+                    },
                     TeleportMsg = "You were sent back to your bed.",
                     FoundBedNowWaitMsg = "I have located your bed {0}, please wait for {1} seconds to be teleported.",
                     MovementRestriction = false,
