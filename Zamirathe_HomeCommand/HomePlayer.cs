@@ -20,14 +20,14 @@ namespace Zamirathe_HomeCommand
         private bool cangohome;
         private Vector3 bedPos;
         private byte bedRot;
-        private Player p;
+        private RocketPlayer p;
 
         private void Load()
         {
             this.GoingHome = false;
             this.cangohome = false;
         }
-        public void GoHome(Vector3 bedPos, byte bedRot, Player player)
+        public void GoHome(Vector3 bedPos, byte bedRot, RocketPlayer player)
         {
             this.waitrestricted = HomeCommand.Instance.Configuration.TeleportWait;
             this.movementrestricted = HomeCommand.Instance.Configuration.MovementRestriction;
@@ -45,14 +45,14 @@ namespace Zamirathe_HomeCommand
                 }
                 else
                 {
-                    if (player.SteamChannel.SteamPlayer.IsAdmin && HomeCommand.Instance.WaitGroups.ContainsKey("admin"))
+                    if (player.IsAdmin && HomeCommand.Instance.WaitGroups.ContainsKey("admin"))
                     {
                         HomeCommand.Instance.WaitGroups.TryGetValue("admin", out this.waittime);
                     }
                     else
                     {
                         // Either not an admin or they don't get special wait restrictions.
-                        List<Group> hg = player.GetGroups();
+                        List<Group> hg = player.Groups;
                         byte[] time2 = new byte[hg.Count];
                         for (byte g=0;g<hg.Count;g++)
                         {
@@ -71,11 +71,11 @@ namespace Zamirathe_HomeCommand
                 if (this.movementrestricted)
                 {
                     this.LastCalledHomePos = this.transform.position;
-                    RocketChatManager.Say(player.SteamChannel.SteamPlayer.SteamPlayerID.CSteamID, String.Format(HomeCommand.Instance.Configuration.FoundBedWaitNoMoveMsg, player.name, this.waittime));
+                    RocketChatManager.Say(player, String.Format(HomeCommand.Instance.Configuration.FoundBedWaitNoMoveMsg, player.CharacterName, this.waittime));
                 }
                 else
                 {
-                    RocketChatManager.Say(player.SteamChannel.SteamPlayer.SteamPlayerID.CSteamID, String.Format(HomeCommand.Instance.Configuration.FoundBedNowWaitMsg, player.name, this.waittime));
+                    RocketChatManager.Say(player, String.Format(HomeCommand.Instance.Configuration.FoundBedNowWaitMsg, player.CharacterName, this.waittime));
                 }
             }
             else
@@ -88,28 +88,28 @@ namespace Zamirathe_HomeCommand
         private void DoGoHome()
         {
             if (!this.cangohome) return;
-            RocketChatManager.Say(this.p.SteamChannel.SteamPlayer.SteamPlayerID.CSteamID, String.Format(HomeCommand.Instance.Configuration.TeleportMsg, this.p.SteamChannel.SteamPlayer.SteamPlayerID.CharacterName));
-            this.p.sendTeleport(this.bedPos, this.bedRot);
+            RocketChatManager.Say(this.p, String.Format(HomeCommand.Instance.Configuration.TeleportMsg, this.p.CharacterName));
+            this.p.Teleport(this.bedPos, this.bedRot);
             this.cangohome = false;
             this.GoingHome = false;
         }
         public void FixedUpdate()
         {
             if (!this.GoingHome) return;
-            if (this.p.PlayerLife.Dead)
+            if (this.p.Dead)
             {
                 // Abort teleport, they died.
-                RocketChatManager.Say(this.p.SteamChannel.SteamPlayer.SteamPlayerID.CSteamID, String.Format(HomeCommand.Instance.Configuration.NoTeleportDiedMsg, this.p.SteamChannel.SteamPlayer.SteamPlayerID.CharacterName));
+                RocketChatManager.Say(this.p, String.Format(HomeCommand.Instance.Configuration.NoTeleportDiedMsg, this.p.CharacterName));
                 this.GoingHome = false;
                 this.cangohome = false;
                 return;
             }
             if (this.movementrestricted)
             {
-                if (Vector3.Distance(this.p.transform.position, this.LastCalledHomePos) > 0.1)
+                if (Vector3.Distance(this.p.Position, this.LastCalledHomePos) > 0.1)
                 {
                     // Abort teleport, they moved.
-                    RocketChatManager.Say(this.p.SteamChannel.SteamPlayer.SteamPlayerID.CSteamID, String.Format(HomeCommand.Instance.Configuration.UnableMoveSinceMoveMsg, this.p.SteamChannel.SteamPlayer.SteamPlayerID.CharacterName));
+                    RocketChatManager.Say(this.p, String.Format(HomeCommand.Instance.Configuration.UnableMoveSinceMoveMsg, this.p.CharacterName));
                     this.GoingHome = false;
                     this.cangohome = false;
                     return;

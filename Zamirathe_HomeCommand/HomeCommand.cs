@@ -26,30 +26,30 @@ namespace Zamirathe_HomeCommand
             }
         }
         // All we are doing here is checking the config to see if anything like restricted movement or time restriction is enforced.
-        public static object[] CheckConfig(Player player, CSteamID playerid, HomePlayer homeplayer)
+        public static object[] CheckConfig(RocketPlayer player)
         {
             object[] returnv = { false, null, null };
             // First check if command is enabled.
             if (!HomeCommand.Instance.Configuration.Enabled)
             {
                 // Command disabled.
-                RocketChatManager.Say(playerid, String.Format(HomeCommand.Instance.Configuration.DisabledMsg, player.SteamChannel.SteamPlayer.SteamPlayerID.CharacterName));
+                RocketChatManager.Say(player, String.Format(HomeCommand.Instance.Configuration.DisabledMsg, player.CharacterName));
                 return returnv;
             }
             // It is enabled, but are they in a vehicle?
-            if (player.Stance.Stance == EPlayerStance.DRIVING || player.Stance.Stance == EPlayerStance.SITTING)
+            if (player.Stance == EPlayerStance.DRIVING || player.Stance == EPlayerStance.SITTING)
             {
                 // They are in a vehicle.
-                RocketChatManager.Say(playerid, String.Format(HomeCommand.Instance.Configuration.NoVehicleMsg, player.SteamChannel.SteamPlayer.SteamPlayerID.CharacterName));
+                RocketChatManager.Say(player, String.Format(HomeCommand.Instance.Configuration.NoVehicleMsg, player.CharacterName));
                 return returnv;
             }
             // They aren't in a vehicle, so check if they have a bed.    
             Vector3 bedPos;
             byte bedRot;
-            if (!BarricadeManager.tryGetBed(playerid, out bedPos, out bedRot))
+            if (!BarricadeManager.tryGetBed(player.CSteamID, out bedPos, out bedRot))
             {
                 // Bed not found.
-                RocketChatManager.Say(playerid, String.Format(HomeCommand.Instance.Configuration.NoBedMsg, player.SteamChannel.SteamPlayer.SteamPlayerID.CharacterName));
+                RocketChatManager.Say(player, String.Format(HomeCommand.Instance.Configuration.NoBedMsg, player.CharacterName));
                 return returnv;
             }
             object[] returnv2 = { true, bedPos, bedRot };

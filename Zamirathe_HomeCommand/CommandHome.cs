@@ -29,14 +29,13 @@ namespace Zamirathe_HomeCommand
                 return "Teleports you to your bed if you have one.";
             }
         }
-        public void Execute(CSteamID playerid, string bed)
+        public void Execute(RocketPlayer playerid, string bed)
         {
-            Player player = PlayerTool.getPlayer(playerid);
-            HomePlayer homeplayer = player.transform.GetComponent<HomePlayer>();
-            object[] cont = HomeCommand.CheckConfig(player, playerid, homeplayer);
+            HomePlayer homeplayer = playerid.Player.transform.GetComponent<HomePlayer>();
+            object[] cont = HomeCommand.CheckConfig(playerid);
             if (!(bool)cont[0]) return;
             // A bed was found, so let's run a few checks.
-            homeplayer.GoHome((Vector3)cont[1], (byte)cont[2], player);
+            homeplayer.GoHome((Vector3)cont[1], (byte)cont[2], playerid);
         }
     }
 }
