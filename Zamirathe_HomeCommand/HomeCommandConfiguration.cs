@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Zamirathe_HomeCommand
 {
-    public class HomeCommandConfiguration : RocketConfiguration
+    public class HomeCommandConfiguration : IRocketConfiguration
     {
         public bool Enabled;
         public string DisabledMsg;
@@ -19,7 +19,7 @@ namespace Zamirathe_HomeCommand
         public string UnableMoveSinceMoveMsg;
         public string NoTeleportDiedMsg;
 
-        public RocketConfiguration DefaultConfiguration
+        public IRocketConfiguration DefaultConfiguration
         {
             get
             {

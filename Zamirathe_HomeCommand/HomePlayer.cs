@@ -53,6 +53,12 @@ namespace Zamirathe_HomeCommand
                     {
                         // Either not an admin or they don't get special wait restrictions.
                         List<Group> hg = player.Groups;
+                        if (hg.Count <= 0)
+                        {
+                            Group group = new Group();
+                            group.Id = "default";
+                            hg.Add(group);
+                        }
                         byte[] time2 = new byte[hg.Count];
                         for (byte g=0;g<hg.Count;g++)
                         {
