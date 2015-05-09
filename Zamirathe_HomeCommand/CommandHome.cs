@@ -29,7 +29,7 @@ namespace Zamirathe_HomeCommand
                 return "Teleports you to your bed if you have one.";
             }
         }
-        public void Execute(RocketPlayer playerid, string bed)
+        public void Execute(RocketPlayer playerid, string[] bed)
         {
             HomePlayer homeplayer = playerid.Player.transform.GetComponent<HomePlayer>();
             object[] cont = HomeCommand.CheckConfig(playerid);

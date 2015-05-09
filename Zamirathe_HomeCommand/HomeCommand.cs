@@ -28,6 +28,7 @@ namespace Zamirathe_HomeCommand
         // All we are doing here is checking the config to see if anything like restricted movement or time restriction is enforced.
         public static object[] CheckConfig(RocketPlayer player)
         {
+            
             object[] returnv = { false, null, null };
             // First check if command is enabled.
             if (!HomeCommand.Instance.Configuration.Enabled)
