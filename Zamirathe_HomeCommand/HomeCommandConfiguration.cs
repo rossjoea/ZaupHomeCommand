@@ -1,10 +1,11 @@
-﻿using Rocket.RocketAPI;
+﻿using Rocket.API;
+using Rocket.Core;
 using System;
 using System.Collections.Generic;
 
 namespace Zamirathe_HomeCommand
 {
-    public class HomeCommandConfiguration : IRocketConfiguration
+    public class HomeCommandConfiguration : IRocketPluginConfiguration
     {
         public bool Enabled;
         public string DisabledMsg;
@@ -19,7 +20,7 @@ namespace Zamirathe_HomeCommand
         public string UnableMoveSinceMoveMsg;
         public string NoTeleportDiedMsg;
 
-        public IRocketConfiguration DefaultConfiguration
+        public IRocketPluginConfiguration DefaultConfiguration
         {
             get
             {

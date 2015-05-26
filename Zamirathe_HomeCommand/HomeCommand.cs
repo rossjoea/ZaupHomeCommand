@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using Rocket.RocketAPI;
+using Rocket.API;
+using Rocket.Unturned;
+using Rocket.Unturned.Plugins;
+using Rocket.Unturned.Player;
 using SDG;
 using UnityEngine;
 using Steamworks;
@@ -34,14 +37,14 @@ namespace Zamirathe_HomeCommand
             if (!HomeCommand.Instance.Configuration.Enabled)
             {
                 // Command disabled.
-                RocketChatManager.Say(player, String.Format(HomeCommand.Instance.Configuration.DisabledMsg, player.CharacterName));
+                RocketChat.Say(player, String.Format(HomeCommand.Instance.Configuration.DisabledMsg, player.CharacterName));
                 return returnv;
             }
             // It is enabled, but are they in a vehicle?
             if (player.Stance == EPlayerStance.DRIVING || player.Stance == EPlayerStance.SITTING)
             {
                 // They are in a vehicle.
-                RocketChatManager.Say(player, String.Format(HomeCommand.Instance.Configuration.NoVehicleMsg, player.CharacterName));
+                RocketChat.Say(player, String.Format(HomeCommand.Instance.Configuration.NoVehicleMsg, player.CharacterName));
                 return returnv;
             }
             // They aren't in a vehicle, so check if they have a bed.    
@@ -50,7 +53,7 @@ namespace Zamirathe_HomeCommand
             if (!BarricadeManager.tryGetBed(player.CSteamID, out bedPos, out bedRot))
             {
                 // Bed not found.
-                RocketChatManager.Say(player, String.Format(HomeCommand.Instance.Configuration.NoBedMsg, player.CharacterName));
+                RocketChat.Say(player, String.Format(HomeCommand.Instance.Configuration.NoBedMsg, player.CharacterName));
                 return returnv;
             }
             object[] returnv2 = { true, bedPos, bedRot };

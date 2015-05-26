@@ -1,4 +1,6 @@
-﻿using Rocket.RocketAPI;
+﻿using Rocket.API;
+using Rocket.Unturned.Commands;
+using Rocket.Unturned.Player;
 using SDG;
 using Steamworks;
 using UnityEngine;
@@ -27,6 +29,13 @@ namespace Zamirathe_HomeCommand
             get
             {
                 return "Teleports you to your bed if you have one.";
+            }
+        }
+        public string Syntax
+        {
+            get
+            {
+                return "";
             }
         }
         public void Execute(RocketPlayer playerid, string[] bed)
