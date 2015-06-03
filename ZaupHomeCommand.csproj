@@ -7,8 +7,8 @@
     <ProjectGuid>{69055F36-2566-445B-8182-BBDF38160D7A}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Zamirathe_HomeCommand</RootNamespace>
-    <AssemblyName>Zamirathe_HomeCommand</AssemblyName>
+    <RootNamespace>ZaupHomeCommand</RootNamespace>
+    <AssemblyName>ZaupHomeCommand</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -70,8 +70,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CommandHome.cs" />
-    <Compile Include="HomeCommand.cs" />
-    <Compile Include="HomeCommandConfiguration.cs" />
+    <Compile Include="ZaupHomeCommand.cs" />
+    <Compile Include="ZaupHomeCommandConfiguration.cs" />
     <Compile Include="HomeGroups.cs" />
     <Compile Include="HomePlayer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
