@@ -5,6 +5,7 @@ using SDG;
 using Steamworks;
 using UnityEngine;
 using System;
+using System.Collections.Generic;
 
 namespace Zamirathe_HomeCommand
 {
@@ -37,6 +38,10 @@ namespace Zamirathe_HomeCommand
             {
                 return "";
             }
+        }
+        public List<string> Aliases
+        {
+            get { return new List<string>(); }
         }
         public void Execute(RocketPlayer playerid, string[] bed)
         {
