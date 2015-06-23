@@ -4,7 +4,7 @@ using Rocket.API;
 using Rocket.Unturned;
 using Rocket.Unturned.Plugins;
 using Rocket.Unturned.Player;
-using SDG;
+using SDG.Unturned;
 using UnityEngine;
 using Steamworks;
 
