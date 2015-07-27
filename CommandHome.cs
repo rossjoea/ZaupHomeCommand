@@ -11,7 +11,7 @@ namespace Zamirathe_HomeCommand
 {
     public class CommandHome : IRocketCommand
     {
-        public bool RunFromConsole
+        public bool AllowFromConsole
         {
             get
             {
@@ -43,8 +43,13 @@ namespace Zamirathe_HomeCommand
         {
             get { return new List<string>(); }
         }
-        public void Execute(RocketPlayer playerid, string[] bed)
+        public List<string> Permissions
         {
+            get { return new List<string>() { }; }
+        }
+        public void Execute(IRocketPlayer caller, string[] bed)
+        {
+            UnturnedPlayer playerid = (UnturnedPlayer)caller;
             HomePlayer homeplayer = playerid.Player.transform.GetComponent<HomePlayer>();
             object[] cont = HomeCommand.CheckConfig(playerid);
             if (!(bool)cont[0]) return;

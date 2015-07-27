@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+
 using Rocket.API;
+using Rocket.Core.Plugins;
 using Rocket.Unturned;
+using Rocket.Unturned.Chat;
 using Rocket.Unturned.Plugins;
 using Rocket.Unturned.Player;
 using SDG.Unturned;
@@ -20,31 +23,31 @@ namespace Zamirathe_HomeCommand
         protected override void Load()
         {
             HomeCommand.Instance = this;
-            if (Loaded)
+            if (this.State == PluginState.Loaded)
             {
-                foreach (HomeGroup hg in this.Configuration.WaitGroups)
+                foreach (HomeGroup hg in this.Configuration.Instance.WaitGroups)
                 {
                     WaitGroups.Add(hg.Id, hg.Wait);
                 }
             }
         }
         // All we are doing here is checking the config to see if anything like restricted movement or time restriction is enforced.
-        public static object[] CheckConfig(RocketPlayer player)
+        public static object[] CheckConfig(UnturnedPlayer player)
         {
             
             object[] returnv = { false, null, null };
             // First check if command is enabled.
-            if (!HomeCommand.Instance.Configuration.Enabled)
+            if (!HomeCommand.Instance.Configuration.Instance.Enabled)
             {
                 // Command disabled.
-                RocketChat.Say(player, String.Format(HomeCommand.Instance.Configuration.DisabledMsg, player.CharacterName));
+                UnturnedChat.Say(player, String.Format(HomeCommand.Instance.Configuration.Instance.DisabledMsg, player.CharacterName));
                 return returnv;
             }
             // It is enabled, but are they in a vehicle?
             if (player.Stance == EPlayerStance.DRIVING || player.Stance == EPlayerStance.SITTING)
             {
                 // They are in a vehicle.
-                RocketChat.Say(player, String.Format(HomeCommand.Instance.Configuration.NoVehicleMsg, player.CharacterName));
+                UnturnedChat.Say(player, String.Format(HomeCommand.Instance.Configuration.Instance.NoVehicleMsg, player.CharacterName));
                 return returnv;
             }
             // They aren't in a vehicle, so check if they have a bed.    
@@ -53,7 +56,7 @@ namespace Zamirathe_HomeCommand
             if (!BarricadeManager.tryGetBed(player.CSteamID, out bedPos, out bedRot))
             {
                 // Bed not found.
-                RocketChat.Say(player, String.Format(HomeCommand.Instance.Configuration.NoBedMsg, player.CharacterName));
+                UnturnedChat.Say(player, String.Format(HomeCommand.Instance.Configuration.Instance.NoBedMsg, player.CharacterName));
                 return returnv;
             }
             object[] returnv2 = { true, bedPos, bedRot };

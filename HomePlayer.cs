@@ -1,16 +1,20 @@
-﻿using Rocket.API;
+﻿using System;
+using System.Collections.Generic;
+
+using Rocket.API;
+using Rocket.Core;
+using Rocket.Core.Logging;
+using Rocket.Core.Serialisation;
 using Rocket.Unturned;
-using Rocket.Unturned.Logging;
+using Rocket.Unturned.Chat;
 using Rocket.Unturned.Player;
 using SDG.Unturned;
 using Steamworks;
 using UnityEngine;
-using System;
-using System.Collections.Generic;
 
 namespace Zamirathe_HomeCommand
 {
-    public class HomePlayer : RocketPlayerComponent
+    public class HomePlayer : UnturnedPlayerComponent
     {
         private bool GoingHome;
         private DateTime LastCalledHomeCommand;
@@ -21,17 +25,17 @@ namespace Zamirathe_HomeCommand
         private bool cangohome;
         private Vector3 bedPos;
         private byte bedRot;
-        private RocketPlayer p;
+        private UnturnedPlayer p;
 
         private void Load()
         {
             this.GoingHome = false;
             this.cangohome = false;
         }
-        public void GoHome(Vector3 bedPos, byte bedRot, RocketPlayer player)
+        public void GoHome(Vector3 bedPos, byte bedRot, UnturnedPlayer player)
         {
-            this.waitrestricted = HomeCommand.Instance.Configuration.TeleportWait;
-            this.movementrestricted = HomeCommand.Instance.Configuration.MovementRestriction;
+            this.waitrestricted = HomeCommand.Instance.Configuration.Instance.TeleportWait;
+            this.movementrestricted = HomeCommand.Instance.Configuration.Instance.MovementRestriction;
             this.p = player;
             this.bedPos = Vector3.up + bedPos;
             this.bedRot = bedRot;
@@ -53,7 +57,7 @@ namespace Zamirathe_HomeCommand
                     else
                     {
                         // Either not an admin or they don't get special wait restrictions.
-                        List<Rocket.Core.Permissions.Group> hg = player.GetGroups(true);
+                        List<RocketPermissionsGroup> hg = R.Permissions.GetGroups(player, true);
                         if (hg.Count <= 0)
                         {
                             Logger.Log("There was an error as a player has no groups!");
@@ -61,7 +65,8 @@ namespace Zamirathe_HomeCommand
                         byte[] time2 = new byte[hg.Count];
                         for (byte g=0;g<hg.Count;g++)
                         {
-                            Rocket.Core.Permissions.Group hgr = hg[g];
+                            
+                            RocketPermissionsGroup hgr = hg[g];
                             HomeCommand.Instance.WaitGroups.TryGetValue(hgr.Id, out time2[g]);
                             if (time2[g] <= 0)
                             {
@@ -76,11 +81,11 @@ namespace Zamirathe_HomeCommand
                 if (this.movementrestricted)
                 {
                     this.LastCalledHomePos = this.transform.position;
-                    RocketChat.Say(player, String.Format(HomeCommand.Instance.Configuration.FoundBedWaitNoMoveMsg, player.CharacterName, this.waittime));
+                    UnturnedChat.Say(player, String.Format(HomeCommand.Instance.Configuration.Instance.FoundBedWaitNoMoveMsg, player.CharacterName, this.waittime));
                 }
                 else
                 {
-                    RocketChat.Say(player, String.Format(HomeCommand.Instance.Configuration.FoundBedNowWaitMsg, player.CharacterName, this.waittime));
+                    UnturnedChat.Say(player, String.Format(HomeCommand.Instance.Configuration.Instance.FoundBedNowWaitMsg, player.CharacterName, this.waittime));
                 }
             }
             else
@@ -93,7 +98,7 @@ namespace Zamirathe_HomeCommand
         private void DoGoHome()
         {
             if (!this.cangohome) return;
-            RocketChat.Say(this.p, String.Format(HomeCommand.Instance.Configuration.TeleportMsg, this.p.CharacterName));
+            UnturnedChat.Say(this.p, String.Format(HomeCommand.Instance.Configuration.Instance.TeleportMsg, this.p.CharacterName));
             this.p.Teleport(this.bedPos, this.bedRot);
             this.cangohome = false;
             this.GoingHome = false;
@@ -104,7 +109,7 @@ namespace Zamirathe_HomeCommand
             if (this.p.Dead)
             {
                 // Abort teleport, they died.
-                RocketChat.Say(this.p, String.Format(HomeCommand.Instance.Configuration.NoTeleportDiedMsg, this.p.CharacterName));
+                UnturnedChat.Say(this.p, String.Format(HomeCommand.Instance.Configuration.Instance.NoTeleportDiedMsg, this.p.CharacterName));
                 this.GoingHome = false;
                 this.cangohome = false;
                 return;
@@ -114,7 +119,7 @@ namespace Zamirathe_HomeCommand
                 if (Vector3.Distance(this.p.Position, this.LastCalledHomePos) > 0.1)
                 {
                     // Abort teleport, they moved.
-                    RocketChat.Say(this.p, String.Format(HomeCommand.Instance.Configuration.UnableMoveSinceMoveMsg, this.p.CharacterName));
+                    UnturnedChat.Say(this.p, String.Format(HomeCommand.Instance.Configuration.Instance.UnableMoveSinceMoveMsg, this.p.CharacterName));
                     this.GoingHome = false;
                     this.cangohome = false;
                     return;
