@@ -12,7 +12,7 @@ using SDG.Unturned;
 using Steamworks;
 using UnityEngine;
 
-namespace Zamirathe_HomeCommand
+namespace ZaupHomeCommand
 {
     public class HomePlayer : UnturnedPlayerComponent
     {
@@ -27,13 +27,19 @@ namespace Zamirathe_HomeCommand
         private byte bedRot;
         private UnturnedPlayer p;
 
-        private void Load()
+        public void Awake()
+        {
+            Logger.Log("Homeplayer is awake");
+            Console.Write("Homeplayer is awake.");
+        }
+        protected override void Load()
         {
             this.GoingHome = false;
             this.cangohome = false;
         }
         public void GoHome(Vector3 bedPos, byte bedRot, UnturnedPlayer player)
         {
+            Logger.Log("starting gohome");
             this.waitrestricted = HomeCommand.Instance.Configuration.Instance.TeleportWait;
             this.movementrestricted = HomeCommand.Instance.Configuration.Instance.MovementRestriction;
             this.p = player;
@@ -97,6 +103,7 @@ namespace Zamirathe_HomeCommand
         }
         private void DoGoHome()
         {
+            Logger.Log("starting dogohome");
             if (!this.cangohome) return;
             UnturnedChat.Say(this.p, String.Format(HomeCommand.Instance.Configuration.Instance.TeleportMsg, this.p.CharacterName));
             this.p.Teleport(this.bedPos, this.bedRot);

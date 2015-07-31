@@ -11,7 +11,7 @@ using SDG.Unturned;
 using UnityEngine;
 using Steamworks;
 
-namespace Zamirathe_HomeCommand
+namespace ZaupHomeCommand
 {
     public class HomeCommand : RocketPlugin<HomeCommandConfiguration>
     {

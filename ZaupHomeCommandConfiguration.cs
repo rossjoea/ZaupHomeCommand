@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using Rocket.API;
 using Rocket.Core;
 
-namespace Zamirathe_HomeCommand
+namespace ZaupHomeCommand
 {
     public class HomeCommandConfiguration : IRocketPluginConfiguration
     {
@@ -21,7 +21,7 @@ namespace Zamirathe_HomeCommand
         public string UnableMoveSinceMoveMsg;
         public string NoTeleportDiedMsg;
 
-        public HomeCommandConfiguration()
+        public void LoadDefaults()
         {
             Enabled = true;
             DisabledMsg = "I'm sorry {0}, but the home command has been disabled.";
