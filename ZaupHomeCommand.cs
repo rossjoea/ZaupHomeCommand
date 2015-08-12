@@ -23,12 +23,9 @@ namespace ZaupHomeCommand
         protected override void Load()
         {
             HomeCommand.Instance = this;
-            if (this.State == PluginState.Loaded)
+            foreach (HomeGroup hg in this.Configuration.Instance.WaitGroups)
             {
-                foreach (HomeGroup hg in this.Configuration.Instance.WaitGroups)
-                {
-                    WaitGroups.Add(hg.Id, hg.Wait);
-                }
+                WaitGroups.Add(hg.Id, hg.Wait);
             }
         }
         // All we are doing here is checking the config to see if anything like restricted movement or time restriction is enforced.
