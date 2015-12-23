@@ -13,13 +13,6 @@ namespace ZaupHomeCommand
 {
     public class CommandHome : IRocketCommand
     {
-        public bool AllowFromConsole
-        {
-            get
-            {
-                return false;
-            }
-        }
         public string Name
         {
             get
@@ -49,6 +42,15 @@ namespace ZaupHomeCommand
         {
             get { return new List<string>() { }; }
         }
+
+        public AllowedCaller AllowedCaller
+        {
+            get
+            {
+                return AllowedCaller.Player;
+            }
+        }
+
         public void Execute(IRocketPlayer caller, string[] bed)
         {
             UnturnedPlayer playerid = (UnturnedPlayer)caller;
