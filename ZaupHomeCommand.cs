@@ -17,12 +17,13 @@ namespace ZaupHomeCommand
     {
         public static bool running;
         public static DateTime start;
-        public Dictionary<string, byte> WaitGroups = new Dictionary<string, byte>();
+        public Dictionary<string, byte> WaitGroups;
         public static HomeCommand Instance;
 
         protected override void Load()
         {
             HomeCommand.Instance = this;
+            WaitGroups = new Dictionary<string, byte>();
             foreach (HomeGroup hg in this.Configuration.Instance.WaitGroups)
             {
                 WaitGroups.Add(hg.Id, hg.Wait);
