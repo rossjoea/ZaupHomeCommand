@@ -25,7 +25,8 @@ namespace ZaupHomeCommand
 
         public void Awake()
         {
-            Logger.Log("Homeplayer is awake");
+            // CS0104: 'Logger' is an ambiguous reference between 'Rocket.Core.Logging.Logger' and 'UnityEngine.Logger'
+            Rocket.Core.Logging.Logger.Log("Homeplayer is awake");
             Console.Write("Homeplayer is awake.");
         }
         protected override void Load()
@@ -35,7 +36,8 @@ namespace ZaupHomeCommand
         }
         public void GoHome(Vector3 bedPos, byte bedRot, UnturnedPlayer player)
         {
-            Logger.Log("starting gohome");
+            // CS0104: 'Logger' is an ambiguous reference between 'Rocket.Core.Logging.Logger' and 'UnityEngine.Logger' 
+            Rocket.Core.Logging.Logger.Log("starting gohome");
             this.waitrestricted = HomeCommand.Instance.Configuration.Instance.TeleportWait;
             this.movementrestricted = HomeCommand.Instance.Configuration.Instance.MovementRestriction;
             this.p = player;
@@ -62,7 +64,8 @@ namespace ZaupHomeCommand
                         List<RocketPermissionsGroup> hg = R.Permissions.GetGroups(player, true);
                         if (hg.Count <= 0)
                         {
-                            Logger.Log("There was an error as a player has no groups!");
+                            // CS0104: 'Logger' is an ambiguous reference between 'Rocket.Core.Logging.Logger' and 'UnityEngine.Logger' 
+                            Rocket.Core.Logging.Logger.Log("There was an error as a player has no groups!");
                         }
                         byte[] time2 = new byte[hg.Count];
                         for (byte g=0;g<hg.Count;g++)
@@ -99,7 +102,8 @@ namespace ZaupHomeCommand
         }
         private void DoGoHome()
         {
-            Logger.Log("starting dogohome");
+            // CS0104: 'Logger' is an ambiguous reference between 'Rocket.Core.Logging.Logger' and 'UnityEngine.Logger' 
+            Rocket.Core.Logging.Logger.Log("starting dogohome");
             if (!this.cangohome) return;
             UnturnedChat.Say(this.p, String.Format(HomeCommand.Instance.Configuration.Instance.TeleportMsg, this.p.CharacterName));
             this.p.Teleport(this.bedPos, this.bedRot);
